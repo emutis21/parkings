@@ -1,58 +1,19 @@
-import { Localitie as ILocalitie } from './types'
+import type { Locality as ILocality } from './types'
 
-const API_URL = process.env.PARKINGS_API_URL
-const CLIENT_API_URL = process.env.NEXT_PUBLIC_PARKINGS_API_URL
+const API_URL = process.env.PARKINGS_API_URL ?? ''
+const CLIENT_API_URL = process.env.NEXT_PUBLIC_PARKINGS_API_URL ?? ''
 
 const api = {
-  list: async (): Promise<ILocalitie[]> => {
+  list: async (): Promise<ILocality[]> => {
     try {
-      const response = await fetch(`${API_URL}/localidad/find`, { method: 'GET' })
-
-      if (!response.ok) throw new Error('Network response was not ok')
-
-      const data: ILocalitie[] = await response.json()
-
-      return data
-    } catch (error) {
-      if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Unable to connect to the server')
-      }
-      throw error
-    }
-  },
-
-  fetch: async (idLocalidad: ILocalitie['idLocalidad']): Promise<ILocalitie> => {
-    try {
-      const response = await fetch(`${API_URL}/localidad/find/${idLocalidad}`, { method: 'GET' })
-
-      if (!response.ok) throw new Error('Network response was not ok')
-
-      const data: ILocalitie = await response.json()
-
-      if (!data) throw new Error('Localidad not found')
-
-      return data
-    } catch (error) {
-      if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Unable to connect to the server')
-      }
-      throw error
-    }
-  },
-
-  create: async (localitie: ILocalitie): Promise<ILocalitie> => {
-    try {
-      const body = JSON.stringify(localitie)
-
-      const response = await fetch(`${CLIENT_API_URL}/localidad/create`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body,
+      const response = await fetch(`${API_URL}/localidad/find`, {
+        method: 'GET',
+        cache: 'no-store'
       })
 
       if (!response.ok) throw new Error('Network response was not ok')
 
-      const data: ILocalitie = await response.json()
+      const data: ILocality[] = await response.json()
 
       return data
     } catch (error) {
@@ -63,10 +24,53 @@ const api = {
     }
   },
 
-  update: async (localitie: ILocalitie): Promise<ILocalitie> => {
-    const { idLocalidad, nombreLocalidad } = localitie
+  fetch: async (idLocalidad: ILocality['idLocalidad']): Promise<ILocality> => {
+    try {
+      const response = await fetch(`${API_URL}/localidad/find/${idLocalidad}`, {
+        method: 'GET',
+        cache: 'no-store'
+      })
 
-    console.log('localitie', localitie)
+      if (!response.ok) throw new Error('Network response was not ok')
+
+      const data: ILocality = await response.json()
+
+      // if (!data) throw new Error('Localidad not found')
+
+      return data
+    } catch (error) {
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        throw new Error('Unable to connect to the server')
+      }
+      throw error
+    }
+  },
+
+  create: async (locality: ILocality): Promise<ILocality> => {
+    try {
+      const body = JSON.stringify(locality)
+
+      const response = await fetch(`${CLIENT_API_URL}/localidad/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body
+      })
+
+      if (!response.ok) throw new Error('Network response was not ok')
+
+      const data: ILocality = await response.json()
+
+      return data
+    } catch (error) {
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        throw new Error('Unable to connect to the server')
+      }
+      throw error
+    }
+  },
+
+  update: async (locality: ILocality): Promise<ILocality> => {
+    const { idLocalidad, nombreLocalidad } = locality
 
     const body = JSON.stringify({ nombreLocalidad })
 
@@ -74,12 +78,12 @@ const api = {
       const response = await fetch(`${CLIENT_API_URL}/localidad/update/${idLocalidad}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body,
+        body
       })
 
       if (!response.ok) throw new Error('Network response was not ok')
 
-      const data: ILocalitie = await response.json()
+      const data: ILocality = await response.json()
 
       return data
     } catch (error) {
@@ -90,23 +94,26 @@ const api = {
     }
   },
 
-  delete: async ({ idLocalidad }: { idLocalidad: ILocalitie['idLocalidad'] }): Promise<string> => {
+  delete: async (idEntity: string): Promise<string> => {
     try {
-      const response = await fetch(`${CLIENT_API_URL}/localidad/delete/${idLocalidad}`, { method: 'DELETE' })
+      const response = await fetch(`${CLIENT_API_URL}/localidad/delete/${idEntity}`, {
+        method: 'DELETE'
+      })
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.message || 'Network response was not ok')
+
+        throw new Error(errorData as string)
       }
 
-      return `Localidad con id ${idLocalidad} eliminada`
+      return `Localidad con id ${idEntity} eliminada`
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
         throw new Error('Unable to connect to the server')
       }
       throw error
     }
-  },
+  }
 }
 
 export default api

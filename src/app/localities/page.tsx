@@ -1,5 +1,5 @@
-import api from '@/modules/localitie/api'
-import LocalitieScreen from '@/modules/localitie/screens/Localitie'
+import api from '@/modules/locality/api'
+import LocalityScreen from '@/modules/locality/screens/Locality'
 
 export default async function Page() {
   const localities = await api.list()
@@ -8,7 +8,7 @@ export default async function Page() {
     <main className='h-full w-full'>
       <h1 className='py-5 text-center text-2xl font-bold'>Localidades</h1>
 
-      <LocalitieScreen localities={localities} />
+      <LocalityScreen localities={localities} />
     </main>
   )
 }

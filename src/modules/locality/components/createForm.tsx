@@ -1,34 +1,55 @@
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { LocalitieFormSchema } from '@/schemas/localitiesFormSchema'
+import type { z } from 'zod'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+
+import { LocalityFormSchema } from '@/schemas/localitiesFormSchema'
+import { Input } from '@/components/ui/input'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
+import { toast } from '@/components/ui/use-toast'
+import { ToastAction } from '@/components/ui/toast'
+
 import api from '../api'
 
-function CreateLocalitie() {
+function CreateLocality() {
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof LocalitieFormSchema>>({
-    resolver: zodResolver(LocalitieFormSchema),
+  const form = useForm<z.infer<typeof LocalityFormSchema>>({
+    resolver: zodResolver(LocalityFormSchema),
     defaultValues: {
       idLocalidad: '',
-      nombreLocalidad: '',
-    },
+      nombreLocalidad: ''
+    }
   })
 
-  const onSubmit = async (data: z.infer<typeof LocalitieFormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof LocalityFormSchema>) => {
     setLoading(true)
     try {
-      const newLocalitie = await api.create(data)
+      const newLocality = await api.create(data)
 
-      router.push(`/localities/${newLocalitie.idLocalidad}`)
+      router.push(`/localities/${newLocality.idLocalidad}`)
+      router.refresh()
+
+      toast({
+        title: `Localidad ${newLocality.nombreLocalidad}`,
+        description: 'Localidad creada correctamente',
+        action: (
+          <ToastAction
+            altText='Ventana de confirmación'
+            className='text-blue-500 hover:text-blue-700'
+          >
+            {loading ? 'Cargando...' : 'Cerrar'}
+          </ToastAction>
+        )
+      })
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error)
+      setLoading(false)
     } finally {
       setLoading(false)
     }
@@ -64,11 +85,11 @@ function CreateLocalitie() {
         />
 
         <Button
+          style={{
+            viewTransitionName: 'button'
+          }}
           title='Guardar'
           type='submit'
-          style={{
-            viewTransitionName: 'button',
-          }}
         >
           Guardar
         </Button>
@@ -77,4 +98,4 @@ function CreateLocalitie() {
   )
 }
 
-export default CreateLocalitie
+export default CreateLocality

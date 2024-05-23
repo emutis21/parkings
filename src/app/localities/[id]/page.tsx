@@ -1,14 +1,16 @@
 import { Link } from 'next-view-transitions'
 
-import api from '@/modules/localitie/api'
 import apiParking from '@/modules/parking/api'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import DialogParking from '@/modules/parking/components/dialog'
+import apiLocality from '@/modules/locality/api'
 
-import LocalitieClient from './client'
+import LocalityClient from './client'
 
 export default async function Page({ params: { id } }: { params: { id: string } }) {
-  const data = await api.fetch(id)
-  const parkings = await apiParking.fetchByLocalitie(id)
+  const data = await apiLocality.fetch(id)
+
+  const parkings = await apiParking.fetchByLocality(id)
 
   const { idLocalidad, nombreLocalidad } = data
 
@@ -23,8 +25,9 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         >
           {idLocalidad} - {nombreLocalidad}
         </h1>
-        <LocalitieClient data={data} />
+        <LocalityClient data={data} />
       </header>
+      <h2 className='mb-6 py-6 text-center text-2xl font-semibold'>Seleccione un parqueadero</h2>
       {parkings.length > 0 && (
         <ul className=''>
           {parkings.map(({ idParqueadero, direccion, disponible }) => (
@@ -43,7 +46,6 @@ export default async function Page({ params: { id } }: { params: { id: string } 
                   </CardHeader>
                   <CardContent>
                     <p>{direccion}</p>
-                    {/* <p>{disponible ? 'Disponible' : 'No disponible'}</p> */}
                     {disponible ? (
                       <p className='text-green-500'>Disponible</p>
                     ) : (
@@ -54,6 +56,9 @@ export default async function Page({ params: { id } }: { params: { id: string } 
               </Link>
             </li>
           ))}
+          <li className='grid h-full w-full place-content-center'>
+            <DialogParking idLocalidad={idLocalidad} />
+          </li>
         </ul>
       )}
     </main>

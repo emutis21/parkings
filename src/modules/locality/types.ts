@@ -1,4 +1,4 @@
-export interface Localitie {
+export interface Locality {
   idLocalidad: string
   nombreLocalidad: string
 }

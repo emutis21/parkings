@@ -1,37 +1,27 @@
 'use client'
 
-import type { Localitie } from '@/modules/localitie/types'
+import type { Locality } from '@/modules/locality/types'
 
-import { useRouter } from 'next/navigation'
+import DialogDelete from '@/components/dialogDelete'
+import { useDeleteEntity } from '@/lib/deleteEntity'
+import api from '@/modules/locality/api'
+import DialogLocality from '@/modules/locality/components/dialog'
 
-import { Button } from '@/components/ui/button'
-import api from '@/modules/localitie/api'
-import DialogLocalitie from '@/modules/localitie/components/dialog'
+function LocalityClient({ data }: { data: Locality }) {
+  const { idLocalidad, nombreLocalidad } = data
 
-function LocalitieClient({ data }: { data: Localitie }) {
-  const { idLocalidad } = data
-  const router = useRouter()
-
-  const handleDelete = async () => {
-    try {
-      await api.delete({ idLocalidad })
-
-      router.push('/localities')
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error)
-    }
-  }
+  const handleDelete = useDeleteEntity({
+    idEntity: idLocalidad,
+    deleteEntity: api.delete
+  })
 
   return (
     <section className='flex gap-5'>
-      <DialogLocalitie localitie={data} />
+      <DialogDelete entity='localidad' handleDelete={handleDelete} nameEntity={nombreLocalidad} />
 
-      <Button title='Eliminar' variant='ghost' onClick={handleDelete}>
-        Eliminar
-      </Button>
+      <DialogLocality locality={data} />
     </section>
   )
 }
 
-export default LocalitieClient
+export default LocalityClient
