@@ -1,9 +1,10 @@
 import { Link } from 'next-view-transitions'
 
-import apiParking from '@/modules/parking/api'
+import apiParking from '~/parking/api'
+import DialogParking from '~/parking/components/dialog'
+import apiLocality from '~/locality/api'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import DialogParking from '@/modules/parking/components/dialog'
-import apiLocality from '@/modules/locality/api'
 
 import LocalityClient from './client'
 

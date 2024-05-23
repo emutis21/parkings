@@ -1,11 +1,12 @@
 'use client'
 
-import type { Locality } from '@/modules/locality/types'
+import type { Locality } from '~/locality/types'
+
+import api from '~/locality/api'
+import DialogLocality from '~/locality/components/dialog'
 
 import DialogDelete from '@/components/dialogDelete'
 import { useDeleteEntity } from '@/lib/deleteEntity'
-import api from '@/modules/locality/api'
-import DialogLocality from '@/modules/locality/components/dialog'
 
 function LocalityClient({ data }: { data: Locality }) {
   const { idLocalidad, nombreLocalidad } = data

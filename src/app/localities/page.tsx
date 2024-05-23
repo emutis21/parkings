@@ -1,5 +1,5 @@
-import api from '@/modules/locality/api'
-import LocalityScreen from '@/modules/locality/screens/Locality'
+import api from '~/locality/api'
+import LocalityScreen from '~/locality/screens/Locality'
 
 export default async function Page() {
   const localities = await api.list()

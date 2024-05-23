@@ -1,7 +1,8 @@
 import { Link } from 'next-view-transitions'
 
+import apiParking from '~/parking/api'
+
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import apiParking from '@/modules/parking/api'
 
 async function CardLocality({
   idLocalidad,
