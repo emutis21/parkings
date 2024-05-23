@@ -4,8 +4,6 @@ import Link from 'next/link'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-// import DialogLocalitie from '../components/dialog'
-
 function ParkingScreen({ parkings }: { parkings: Parking[] }) {
   return (
     <ul className=''>
@@ -35,8 +33,6 @@ function ParkingScreen({ parkings }: { parkings: Parking[] }) {
           </Link>
         </li>
       ))}
-
-      {/* <DialogLocalitie /> */}
     </ul>
   )
 }

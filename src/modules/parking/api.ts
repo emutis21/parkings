@@ -6,7 +6,10 @@ const CLIENT_API_URL = process.env.NEXT_PUBLIC_PARKINGS_API_URL ?? ''
 const api = {
   list: async (): Promise<IParking[]> => {
     try {
-      const response = await fetch(`${API_URL}/parqueadero/find`, { method: 'GET' })
+      const response = await fetch(`${API_URL}/parqueadero/find`, {
+        method: 'GET',
+        cache: 'no-store'
+      })
 
       if (!response.ok) throw new Error('Network response was not ok')
 
@@ -24,7 +27,8 @@ const api = {
   fetch: async (idParqueadero: IParking['idParqueadero']): Promise<IParking> => {
     try {
       const response = await fetch(`${API_URL}/parqueadero/find/${idParqueadero}`, {
-        method: 'GET'
+        method: 'GET',
+        cache: 'no-store'
       })
 
       if (!response.ok) throw new Error('Network response was not ok')
@@ -42,10 +46,11 @@ const api = {
     }
   },
 
-  fetchByLocalitie: async (idLocalidad: IParking['idLocalidad']): Promise<IParking[]> => {
+  fetchByLocality: async (idLocalidad: IParking['idLocalidad']): Promise<IParking[]> => {
     try {
       const response = await fetch(`${API_URL}/parqueadero/find/localidad/${idLocalidad}`, {
-        method: 'GET'
+        method: 'GET',
+        cache: 'no-store'
       })
 
       if (!response.ok) throw new Error('Network response was not ok')
@@ -112,13 +117,9 @@ const api = {
     }
   },
 
-  delete: async ({
-    idParqueadero
-  }: {
-    idParqueadero: IParking['idParqueadero']
-  }): Promise<string> => {
+  delete: async (idEntity: string): Promise<string> => {
     try {
-      const response = await fetch(`${CLIENT_API_URL}/parqueadero/delete/${idParqueadero}`, {
+      const response = await fetch(`${CLIENT_API_URL}/parqueadero/delete/${idEntity}`, {
         method: 'DELETE'
       })
 
@@ -128,7 +129,7 @@ const api = {
         throw new Error(errorData as string)
       }
 
-      return `Parqueadero con id ${idParqueadero} eliminado`
+      return `Parqueadero con id ${idEntity} eliminado`
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
         throw new Error('Unable to connect to the server')
