@@ -1,14 +1,15 @@
 'use client'
 
-import type { Parking } from '@/modules/parking/types'
+import type { Parking } from '~/parking/types'
+
+import api from '~/parking/api'
+import DialogParking from '~/parking/components/dialog'
 
 import DialogDelete from '@/components/dialogDelete'
 import { useDeleteEntity } from '@/lib/deleteEntity'
-import api from '@/modules/parking/api'
-import DialogParking from '@/modules/parking/components/dialog'
 
 function ParkingClient({ data }: { data: Parking }) {
-  const { idLocalidad, direccion, disponible, idParqueadero } = data
+  const { idParqueadero } = data
 
   const handleDelete = useDeleteEntity({
     idEntity: idParqueadero,

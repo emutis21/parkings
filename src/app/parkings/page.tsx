@@ -1,5 +1,5 @@
-import api from '@/modules/parking/api'
-import ParkingScreen from '@/modules/parking/screens/Parking'
+import api from '~/parking/api'
+import ParkingScreen from '~/parking/screens/Parking'
 
 export default async function Page() {
   const parkings = await api.list()

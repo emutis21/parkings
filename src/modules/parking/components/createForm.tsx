@@ -1,5 +1,6 @@
+import type { Locality } from '~/locality/types'
+
 import type { z } from 'zod'
-import type { Locality } from '@/modules/locality/types'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'

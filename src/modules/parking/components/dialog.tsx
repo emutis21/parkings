@@ -1,7 +1,8 @@
 'use client'
 
+import type { Locality } from '~/locality/types'
+
 import type { Parking } from '../types'
-import type { Locality } from '@/modules/locality/types'
 
 import { buttonVariants } from '@/components/ui/button'
 import {

@@ -1,11 +1,17 @@
-import apiParking from '@/modules/parking/api'
-import apiLocalidad from '@/modules/locality/api'
+import { Link } from 'next-view-transitions'
+
+import apiParking from '~/parking/api'
+import apiLocality from '~/locality/api'
+import apiArea from '~/area/api'
+
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 import ParkingClient from './client'
 
 export default async function Page({ params: { parkingId } }: { params: { parkingId: string } }) {
   const parking = await apiParking.fetch(parkingId)
-  const locality = await apiLocalidad.fetch(parking.idLocalidad)
+  const locality = await apiLocality.fetch(parking.idLocalidad)
+  const areas = await apiArea.fetchByParking(parkingId)
 
   const { nombreLocalidad } = locality
 
@@ -34,6 +40,35 @@ export default async function Page({ params: { parkingId } }: { params: { parkin
           <ParkingClient data={parking} />
         </div>
       </header>
+      {areas.length > 0 ? (
+        <section>
+          <h2 className='py-5 text-center text-xl font-bold'>Áreas</h2>
+          <ul className=''>
+            {areas.map(({ idArea, descripcion, tipo }) => (
+              <li
+                key={idArea}
+                style={{
+                  viewTransitionName: `area-${idArea}`
+                }}
+              >
+                <Link href={`/parkings/${idParqueadero}/${idArea}`}>
+                  <Card key={idArea} className='hover:bg-gray-900'>
+                    <CardHeader>
+                      <CardTitle>{idArea}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <span>{descripcion}</span>
+                    </CardContent>
+                    <CardFooter>{tipo}</CardFooter>
+                  </Card>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <h2 className='py-5 text-center text-xl font-bold'>No hay áreas disponibles</h2>
+      )}
     </main>
   )
 }
