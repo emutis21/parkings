@@ -1,5 +1,7 @@
 import apiArea from '~/area/api'
 
+import AreaClient from './client'
+
 export default async function Page({ params: { areaId } }: { params: { areaId: string } }) {
   const area = await apiArea.fetch(areaId)
 
@@ -21,6 +23,7 @@ export default async function Page({ params: { areaId } }: { params: { areaId: s
             <span className='font-semibold'>{descripcion}</span>
             <span className='font-normal text-green-500'>{tipo}</span>
           </div>
+          <AreaClient data={area} />
         </div>
       </header>
     </main>
