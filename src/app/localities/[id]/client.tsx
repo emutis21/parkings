@@ -8,7 +8,7 @@ import DialogLocality from '~/locality/components/dialog'
 import DialogDelete from '@/components/dialogDelete'
 import { useDeleteEntity } from '@/lib/deleteEntity'
 
-function LocalityClient({ data }: { data: Locality }) {
+function LocalityClient({ data, noParkings }: { data: Locality; noParkings: boolean }) {
   const { idLocalidad, nombreLocalidad } = data
 
   const handleDelete = useDeleteEntity({
@@ -18,7 +18,9 @@ function LocalityClient({ data }: { data: Locality }) {
 
   return (
     <section className='flex gap-5'>
-      <DialogDelete entity='localidad' handleDelete={handleDelete} nameEntity={nombreLocalidad} />
+      {noParkings ? (
+        <DialogDelete entity='localidad' handleDelete={handleDelete} nameEntity={nombreLocalidad} />
+      ) : null}
 
       <DialogLocality locality={data} />
     </section>

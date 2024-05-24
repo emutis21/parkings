@@ -10,10 +10,11 @@ import LocalityClient from './client'
 
 export default async function Page({ params: { id } }: { params: { id: string } }) {
   const data = await apiLocality.fetch(id)
-
   const parkings = await apiParking.fetchByLocality(id)
 
   const { idLocalidad, nombreLocalidad } = data
+
+  const noParkings = parkings.length === 0
 
   return (
     <main>
@@ -26,10 +27,17 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         >
           {idLocalidad} - {nombreLocalidad}
         </h1>
-        <LocalityClient data={data} />
+        <LocalityClient data={data} noParkings={noParkings} />
       </header>
-      <h2 className='mb-6 py-6 text-center text-2xl font-semibold'>Seleccione un parqueadero</h2>
-      {parkings.length > 0 && (
+      {noParkings ? (
+        <section>
+          <h2 className='mb-6 py-6 text-center text-2xl font-semibold'>Crear un parqueadero</h2>
+          <DialogParking />
+        </section>
+      ) : (
+        <h2 className='mb-6 py-6 text-center text-2xl font-semibold'>Selecciona un parqueadero</h2>
+      )}
+      {parkings.length > 0 ? (
         <ul className=''>
           {parkings.map(({ idParqueadero, direccion, disponible }) => (
             <li
@@ -61,7 +69,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
             <DialogParking idLocalidad={idLocalidad} />
           </li>
         </ul>
-      )}
+      ) : null}
     </main>
   )
 }
