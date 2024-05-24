@@ -7,13 +7,13 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ParkingFormSchema } from '@/schemas/parkingsFormSchema'
-import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
-import { toast } from '@/components/ui/use-toast'
-import { ToastAction } from '@/components/ui/toast'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { ToastAction } from '@/components/ui/toast'
+import { toast } from '@/components/ui/use-toast'
+import { ParkingFormSchema } from '@/schemas/parkingsFormSchema'
 
 import api from '../api'
 
@@ -27,7 +27,7 @@ function CreateParking({ idLocalidad }: { idLocalidad?: Locality['idLocalidad'] 
       idParqueadero: '',
       direccion: '',
       disponible: false,
-      idLocalidad: idLocalidad
+      idLocalidad
     }
   })
 
@@ -104,6 +104,7 @@ function CreateParking({ idLocalidad }: { idLocalidad?: Locality['idLocalidad'] 
 
         <FormField
           control={form.control}
+          defaultValue={idLocalidad}
           name='idLocalidad'
           render={({ field }) => (
             <FormItem>

@@ -5,6 +5,7 @@ import apiLocality from '~/locality/api'
 import apiArea from '~/area/api'
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import DialogArea from '@/modules/area/components/dialog'
 
 import ParkingClient from './client'
 
@@ -64,6 +65,9 @@ export default async function Page({ params: { parkingId } }: { params: { parkin
                 </Link>
               </li>
             ))}
+            <li className='grid h-full w-full place-content-center'>
+              <DialogArea idParking={idParqueadero} />
+            </li>
           </ul>
         </section>
       ) : (

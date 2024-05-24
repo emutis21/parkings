@@ -4,6 +4,8 @@ import type { Locality } from '~/locality/types'
 
 import type { Parking } from '../types'
 
+import { useParams } from 'next/navigation'
+
 import { buttonVariants } from '@/components/ui/button'
 import {
   Dialog,
@@ -17,13 +19,9 @@ import {
 import CreateParking from './createForm'
 import UpdateParking from './updateForm'
 
-function DialogParking({
-  parking,
-  idLocalidad
-}: {
-  parking?: Parking
-  idLocalidad?: Locality['idLocalidad']
-}) {
+function DialogParking({ parking }: { parking?: Parking }) {
+  const params = useParams<{ id: Locality['idLocalidad'] }>()
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -38,11 +36,7 @@ function DialogParking({
             {parking ? 'Edita la información del parqueadero' : 'Agrega un un nuevo parqueadero'}
           </DialogDescription>
         </DialogHeader>
-        {parking ? (
-          <UpdateParking parking={parking} />
-        ) : (
-          <CreateParking idLocalidad={idLocalidad} />
-        )}
+        {parking ? <UpdateParking parking={parking} /> : <CreateParking idLocalidad={params.id} />}
       </DialogContent>
     </Dialog>
   )
