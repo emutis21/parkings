@@ -15,5 +15,6 @@ export const AreaFormSchema = z.object({
 
 export const AreaFormSchemaUpdate = AreaFormSchema.omit({
   idArea: true,
+  tipo: true,
   idParqueadero: true
 })
