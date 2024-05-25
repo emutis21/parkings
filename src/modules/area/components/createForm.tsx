@@ -27,11 +27,16 @@ import {
 import { ToastAction } from '@/components/ui/toast'
 import { toast } from '@/components/ui/use-toast'
 import { AreaFormSchema } from '@/schemas/areasFormSchema'
+import { DialogClose } from '@/components/ui/dialog'
 
 import api from '../api'
 import { VehicleType } from '../types'
 
-function CreateArea({ idParqueadero }: { idParqueadero?: Parking['idParqueadero'] }) {
+interface CreateAreaProps {
+  idParqueadero?: Parking['idParqueadero']
+}
+
+function CreateArea({ idParqueadero }: CreateAreaProps) {
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
@@ -48,9 +53,10 @@ function CreateArea({ idParqueadero }: { idParqueadero?: Parking['idParqueadero'
   const onSubmit = async (data: z.infer<typeof AreaFormSchema>) => {
     setLoading(true)
     try {
+      data.idArea = data.idArea.toUpperCase()
+
       const newArea = await api.create(data)
 
-      router.push(`/parkings/${idParqueadero!}/${newArea.idArea}`)
       router.refresh()
 
       toast({
@@ -68,7 +74,6 @@ function CreateArea({ idParqueadero }: { idParqueadero?: Parking['idParqueadero'
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
-      setLoading(false)
     } finally {
       setLoading(false)
     }
@@ -147,15 +152,18 @@ function CreateArea({ idParqueadero }: { idParqueadero?: Parking['idParqueadero'
           )}
         />
 
-        <Button
-          style={{
-            viewTransitionName: 'button'
-          }}
-          title='Guardar'
-          type='submit'
-        >
-          Guardar
-        </Button>
+        <DialogClose asChild>
+          <Button
+            style={{
+              viewTransitionName: 'button'
+            }}
+            title='Guardar'
+            type='submit'
+          >
+            Guardar
+          </Button>
+          ¨
+        </DialogClose>
       </form>
     </Form>
   )

@@ -8,7 +8,7 @@ import DialogArea from '~/area/components/dialog'
 import DialogDelete from '@/components/dialogDelete'
 import { useDeleteEntity } from '@/lib/deleteEntity'
 
-function AreaClient({ data }: { data: Area }) {
+function AreaClient({ data, noSpaces }: { data: Area; noSpaces: boolean }) {
   const { idArea } = data
 
   const handleDelete = useDeleteEntity({
@@ -18,7 +18,9 @@ function AreaClient({ data }: { data: Area }) {
 
   return (
     <div className='flex gap-5'>
-      <DialogDelete entity='area' handleDelete={handleDelete} nameEntity={idArea} />
+      {noSpaces ? (
+        <DialogDelete entity='area' handleDelete={handleDelete} nameEntity={idArea} />
+      ) : null}
 
       <DialogArea area={data} />
     </div>

@@ -1,31 +1,27 @@
 import apiArea from '~/area/api'
-
-import AreaClient from './client'
+import apiSpace from '~/space/api'
+import { AreaHeader } from '~/area/screens/Header'
+import { SpacesList } from '~/space/screens/Spaces'
 
 export default async function Page({ params: { areaId } }: { params: { areaId: string } }) {
   const area = await apiArea.fetch(areaId)
+  const spaces = await apiSpace.fetchByArea(areaId)
 
-  const { idArea, descripcion, tipo } = area
+  const { tipo } = area
+
+  const noSpaces = spaces.length === 0
 
   return (
     <main className='h-full w-full'>
-      <header className='mt-5 flex w-full flex-col gap-5'>
-        <h1
-          className='py-5 text-center text-2xl font-bold'
-          style={{
-            viewTransitionName: `area-${idArea}`
-          }}
-        >
-          Área {idArea}
-        </h1>
-        <div className='flex w-full justify-between'>
-          <div className='flex items-center gap-5'>
-            <span className='font-semibold'>{descripcion}</span>
-            <span className='font-normal text-green-500'>{tipo}</span>
-          </div>
-          <AreaClient data={area} />
-        </div>
-      </header>
+      <AreaHeader area={area} noSpaces={noSpaces} />
+
+      {spaces.length > 0 ? (
+        <SpacesList areaId={areaId} spaces={spaces} tipo={tipo} />
+      ) : (
+        <section>
+          <h2 className='py-5 text-center text-xl font-bold'>No hay espacios</h2>
+        </section>
+      )}
     </main>
   )
 }
