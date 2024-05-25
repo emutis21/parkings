@@ -5,9 +5,11 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 function ParkingScreen({ parkings }: { parkings: Parking[] }) {
+  const sortedParkings = parkings.sort((a, b) => a.idParqueadero.localeCompare(b.idParqueadero))
+
   return (
     <ul className=''>
-      {parkings.map(({ idParqueadero, direccion, disponible, idLocalidad }) => (
+      {sortedParkings.map(({ idParqueadero, direccion, disponible, idLocalidad }) => (
         <li
           key={idParqueadero}
           style={{
