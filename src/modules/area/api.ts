@@ -1,5 +1,7 @@
 import type { Area as IArea } from './types'
 
+import { deleteEntity } from '@/lib/api'
+
 const API_URL = process.env.PARKINGS_API_URL ?? ''
 const CLIENT_API_URL = process.env.NEXT_PUBLIC_PARKINGS_API_URL ?? ''
 
@@ -98,7 +100,9 @@ const api = {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(descripcion)
+        body: JSON.stringify({
+          descripcion
+        })
       })
 
       if (!response.ok) throw new Error('Network response was not ok')
@@ -114,22 +118,7 @@ const api = {
     }
   },
 
-  delete: async (idEntity: string): Promise<string> => {
-    try {
-      const response = await fetch(`${CLIENT_API_URL}/area/delete/${idEntity}`, {
-        method: 'DELETE'
-      })
-
-      if (!response.ok) throw new Error('Network response was not ok')
-
-      return `Área ${idEntity} eliminada`
-    } catch (error) {
-      if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Unable to connect to the server')
-      }
-      throw error
-    }
-  }
+  delete: (idEntity: string): Promise<string> => deleteEntity('area', idEntity)
 }
 
 export default api

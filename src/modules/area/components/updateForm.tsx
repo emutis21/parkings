@@ -38,7 +38,7 @@ function UpdateArea({ area }: { area: Area }) {
         idParqueadero: area.idParqueadero
       })
 
-      router.push(`/parkings/${area.idParqueadero}/${updatedArea.idArea}`)
+      router.push(`/parkings/${area.idParqueadero}`)
       router.refresh()
 
       toast({
@@ -56,7 +56,6 @@ function UpdateArea({ area }: { area: Area }) {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
-      setLoading(false)
     } finally {
       setLoading(false)
     }
