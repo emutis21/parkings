@@ -8,7 +8,7 @@ import DialogParking from '~/parking/components/dialog'
 import DialogDelete from '@/components/dialogDelete'
 import { useDeleteEntity } from '@/lib/deleteEntity'
 
-function ParkingClient({ data }: { data: Parking }) {
+function ParkingClient({ data, noAreas }: { data: Parking; noAreas: boolean }) {
   const { idParqueadero } = data
 
   const handleDelete = useDeleteEntity({
@@ -18,7 +18,9 @@ function ParkingClient({ data }: { data: Parking }) {
 
   return (
     <div className='flex gap-5'>
-      <DialogDelete entity='parqueadero' handleDelete={handleDelete} nameEntity={idParqueadero} />
+      {noAreas ? (
+        <DialogDelete entity='parqueadero' handleDelete={handleDelete} nameEntity={idParqueadero} />
+      ) : null}
 
       <DialogParking parking={data} />
     </div>
