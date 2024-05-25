@@ -16,6 +16,8 @@ export default async function Page({ params: { id } }: { params: { id: string } 
 
   const noParkings = parkings.length === 0
 
+  const sortedParkings = parkings.sort((a, b) => a.idParqueadero.localeCompare(b.idParqueadero))
+
   return (
     <main>
       <header className='flex items-center'>
@@ -29,6 +31,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         </h1>
         <LocalityClient data={data} noParkings={noParkings} />
       </header>
+
       {noParkings ? (
         <section>
           <h2 className='mb-6 py-6 text-center text-2xl font-semibold'>Crear un parqueadero</h2>
@@ -37,9 +40,10 @@ export default async function Page({ params: { id } }: { params: { id: string } 
       ) : (
         <h2 className='mb-6 py-6 text-center text-2xl font-semibold'>Selecciona un parqueadero</h2>
       )}
+
       {parkings.length > 0 ? (
         <ul className=''>
-          {parkings.map(({ idParqueadero, direccion, disponible }) => (
+          {sortedParkings.map(({ idParqueadero, direccion, disponible }) => (
             <li
               key={idParqueadero}
               style={{
@@ -47,7 +51,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
               }}
             >
               <Link href={`/parkings/${idParqueadero}`}>
-                <Card key={idParqueadero} className='hover:bg-gray-900'>
+                <Card key={idParqueadero} data-type={disponible ? 'disponible' : 'ocupado'}>
                   <CardHeader>
                     <CardTitle>
                       <p>{idParqueadero}</p>
@@ -55,18 +59,14 @@ export default async function Page({ params: { id } }: { params: { id: string } 
                   </CardHeader>
                   <CardContent>
                     <p>{direccion}</p>
-                    {disponible ? (
-                      <p className='text-green-500'>Disponible</p>
-                    ) : (
-                      <p className='text-red-500'>No disponible</p>
-                    )}
+                    {disponible ? <span>Disponible</span> : <span>No disponible</span>}
                   </CardContent>
                 </Card>
               </Link>
             </li>
           ))}
           <li className='grid h-full w-full place-content-center'>
-            <DialogParking idLocalidad={idLocalidad} />
+            <DialogParking />
           </li>
         </ul>
       ) : null}

@@ -1,5 +1,7 @@
 import type { Locality as ILocality } from './types'
 
+import { deleteEntity } from '@/lib/api'
+
 const API_URL = process.env.PARKINGS_API_URL ?? ''
 const CLIENT_API_URL = process.env.NEXT_PUBLIC_PARKINGS_API_URL ?? ''
 
@@ -94,26 +96,7 @@ const api = {
     }
   },
 
-  delete: async (idEntity: string): Promise<string> => {
-    try {
-      const response = await fetch(`${CLIENT_API_URL}/localidad/delete/${idEntity}`, {
-        method: 'DELETE'
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-
-        throw new Error(errorData as string)
-      }
-
-      return `Localidad con id ${idEntity} eliminada`
-    } catch (error) {
-      if (error instanceof TypeError && error.message === 'Failed to fetch') {
-        throw new Error('Unable to connect to the server')
-      }
-      throw error
-    }
-  }
+  delete: (idEntity: string): Promise<string> => deleteEntity('localidad', idEntity)
 }
 
 export default api

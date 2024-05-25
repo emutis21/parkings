@@ -4,9 +4,13 @@ import CardLocality from '../components/card'
 import DialogLocality from '../components/dialog'
 
 function LocalityScreen({ localities }: { localities: Locality[] }) {
+  const sortedLocalities = localities.sort((a, b) =>
+    a.nombreLocalidad.localeCompare(b.nombreLocalidad)
+  )
+
   return (
     <ul className=''>
-      {localities.map(({ idLocalidad, nombreLocalidad }) => (
+      {sortedLocalities.map(({ idLocalidad, nombreLocalidad }) => (
         <CardLocality
           key={idLocalidad}
           idLocalidad={idLocalidad}

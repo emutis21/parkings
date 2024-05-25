@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { ToastAction } from '@/components/ui/toast'
+import { DialogClose } from '@/components/ui/dialog'
 
 import api from '../api'
 
@@ -29,9 +30,10 @@ function CreateLocality() {
   const onSubmit = async (data: z.infer<typeof LocalityFormSchema>) => {
     setLoading(true)
     try {
+      data.idLocalidad = data.idLocalidad.toUpperCase()
+
       const newLocality = await api.create(data)
 
-      router.push(`/localities/${newLocality.idLocalidad}`)
       router.refresh()
 
       toast({
@@ -49,7 +51,6 @@ function CreateLocality() {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
-      setLoading(false)
     } finally {
       setLoading(false)
     }
@@ -83,16 +84,19 @@ function CreateLocality() {
             </FormItem>
           )}
         />
-
-        <Button
-          style={{
-            viewTransitionName: 'button'
-          }}
-          title='Guardar'
-          type='submit'
-        >
-          Guardar
-        </Button>
+        <DialogClose asChild>
+          <Button
+            className='w-fit self-center'
+            style={{
+              viewTransitionName: 'button'
+            }}
+            title='Guardar'
+            type='submit'
+            variant='default'
+          >
+            Crear
+          </Button>
+        </DialogClose>
       </form>
     </Form>
   )
