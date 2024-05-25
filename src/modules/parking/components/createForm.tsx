@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { ToastAction } from '@/components/ui/toast'
 import { toast } from '@/components/ui/use-toast'
 import { ParkingFormSchema } from '@/schemas/parkingsFormSchema'
+import { DialogClose } from '@/components/ui/dialog'
 
 import api from '../api'
 
@@ -34,9 +35,10 @@ function CreateParking({ idLocalidad }: { idLocalidad?: Locality['idLocalidad'] 
   const onSubmit = async (data: z.infer<typeof ParkingFormSchema>) => {
     setLoading(true)
     try {
+      data.idParqueadero = data.idParqueadero.toUpperCase()
+
       const newParking = await api.create(data)
 
-      router.push(`/parkings/${newParking.idParqueadero}`)
       router.refresh()
 
       toast({
@@ -54,7 +56,6 @@ function CreateParking({ idLocalidad }: { idLocalidad?: Locality['idLocalidad'] 
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
-      setLoading(false)
     } finally {
       setLoading(false)
     }
@@ -122,15 +123,17 @@ function CreateParking({ idLocalidad }: { idLocalidad?: Locality['idLocalidad'] 
           )}
         />
 
-        <Button
-          style={{
-            viewTransitionName: 'button'
-          }}
-          title='Guardar'
-          type='submit'
-        >
-          Guardar
-        </Button>
+        <DialogClose asChild>
+          <Button
+            style={{
+              viewTransitionName: 'button'
+            }}
+            title='Guardar'
+            type='submit'
+          >
+            Guardar
+          </Button>
+        </DialogClose>
       </form>
     </Form>
   )

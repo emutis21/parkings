@@ -1,11 +1,9 @@
-import { Link } from 'next-view-transitions'
-
-import apiParking from '~/parking/api'
-import apiLocality from '~/locality/api'
 import apiArea from '~/area/api'
+import DialogArea from '~/area/components/dialog'
+import apiLocality from '~/locality/api'
+import apiParking from '~/parking/api'
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import DialogArea from '@/modules/area/components/dialog'
+import ParkingIdScreen from '@/modules/parking/screens/ParkingId'
 
 import ParkingClient from './client'
 
@@ -17,6 +15,8 @@ export default async function Page({ params: { parkingId } }: { params: { parkin
   const { nombreLocalidad } = locality
 
   const { direccion, disponible, idParqueadero } = parking
+
+  const noAreas = areas.length === 0
 
   return (
     <main className='h-full w-full'>
@@ -38,41 +38,28 @@ export default async function Page({ params: { parkingId } }: { params: { parkin
               <span className='font-normal text-red-500'>No disponible</span>
             )}
           </div>
-          <ParkingClient data={parking} />
+          <ParkingClient data={parking} noAreas={noAreas} />
         </div>
       </header>
+      {noAreas ? (
+        <section>
+          <h2 className='py-5 text-center text-xl font-bold'>Crear un área</h2>
+          <DialogArea />
+        </section>
+      ) : (
+        <h2 className='py-5 text-center text-xl font-bold'>Selecciona un área</h2>
+      )}
       {areas.length > 0 ? (
         <section>
           <h2 className='py-5 text-center text-xl font-bold'>Áreas</h2>
-          <ul className=''>
-            {areas.map(({ idArea, descripcion, tipo }) => (
-              <li
-                key={idArea}
-                style={{
-                  viewTransitionName: `area-${idArea}`
-                }}
-              >
-                <Link href={`/parkings/${idParqueadero}/${idArea}`}>
-                  <Card key={idArea} className='hover:bg-gray-900'>
-                    <CardHeader>
-                      <CardTitle>{idArea}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <span>{descripcion}</span>
-                    </CardContent>
-                    <CardFooter>{tipo}</CardFooter>
-                  </Card>
-                </Link>
-              </li>
-            ))}
+          <ul className='[grid-template-columns:_repeat(auto-fill,_minmax(200px,_1fr))]'>
+            <ParkingIdScreen areas={areas} idParqueadero={idParqueadero} />
             <li className='grid h-full w-full place-content-center'>
-              <DialogArea idParking={idParqueadero} />
+              <DialogArea />
             </li>
           </ul>
         </section>
-      ) : (
-        <h2 className='py-5 text-center text-xl font-bold'>No hay áreas disponibles</h2>
-      )}
+      ) : null}
     </main>
   )
 }

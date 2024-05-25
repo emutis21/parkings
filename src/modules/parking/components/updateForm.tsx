@@ -58,7 +58,6 @@ function UpdateParking({ parking }: { parking: Parking }) {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
-      setLoading(false)
     } finally {
       setLoading(false)
     }
