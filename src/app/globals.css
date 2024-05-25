@@ -114,5 +114,83 @@ html {
 ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
+  row-gap: 2rem;
+  column-gap: 1.5rem;
 }
+
+[data-type='AUTOMOVIL'] {
+  @apply border-orange-500 text-orange-500;
+
+  span {
+    @apply text-orange-200;
+  }
+
+  &:hover {
+    background-color: hsl(25, 95%, 8%);
+  }
+}
+
+[data-type='MOTOCICLETA'] {
+  @apply border-purple-400 text-purple-500;
+
+  span {
+    @apply text-purple-200;
+  }
+
+  h3 {
+    @apply text-purple-400;
+  }
+
+  &:hover {
+    background-color: hsl(285, 95%, 8%);
+  }
+}
+
+[data-type='BICICLETA'] {
+  @apply border-blue-400 text-blue-400;
+
+  span {
+    @apply text-blue-200;
+  }
+
+  &:hover {
+    background-color: hsl(195, 95%, 8%);
+  }
+}
+
+[data-type='disponible'] {
+  @apply border-[hsl(142,_71,_72)] bg-[hsl(142,_71,_8)] hover:bg-[hsl(142,_71,_12)];
+
+  span {
+    @apply text-green-400;
+  }
+
+  & > div {
+    justify-content: center;
+  }
+}
+
+[data-type='ocupado'] {
+  @apply border-[hsl(0,_71,_52)] bg-[hsl(0,_71,_8)] hover:bg-[hsl(0,_71,_12)];
+
+  span {
+    @apply text-red-500;
+  }
+
+  & > div {
+    justify-content: center;
+  }
+}
+
+/* button[type='button']:focus,
+button[type='button']:focus-within,
+button[type='button']:focus-visible {
+  [data-type='disponible'],
+  [data-type='ocupado'] {
+    @apply border-primary bg-background;
+
+    span {
+      @apply text-primary;
+    }
+  }
+} */
